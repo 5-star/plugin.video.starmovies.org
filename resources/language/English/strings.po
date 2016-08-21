@@ -1,0 +1,70 @@
+msgid ""
+msgstr ""
+
+msgctxt "#30001"
+msgid "Number of lines"
+msgstr ""
+
+msgctxt "#30002"
+msgid "Tmdb User"
+msgstr ""
+
+msgctxt "#30003"
+msgid "Tmdb Password"
+msgstr ""
+
+msgctxt "#30004"
+msgid "Rated Movies"
+msgstr ""
+
+msgctxt "#30005"
+msgid "Rated Tv"
+msgstr ""
+
+msgctxt "#30006"
+msgid "Watchlist Movies"
+msgstr ""
+
+msgctxt "#30007"
+msgid "Watchlist Tv"
+msgstr ""
+
+msgctxt "#30008"
+msgid "Favorite Movies"
+msgstr ""
+
+msgctxt "#30009"
+msgid "Favorite Tv"
+msgstr ""
+
+msgctxt "#30010"
+msgid "Rate at TMDB"
+msgstr ""
+
+msgctxt "#30011"
+msgid "Add to Watchlist"
+msgstr ""
+
+msgctxt "#30012"
+msgid "Remove from Watchlist"
+msgstr ""
+
+msgctxt "#30013"
+msgid "Add to Favorites"
+msgstr ""
+
+msgctxt "#30014"
+msgid "Remove from Favorites"
+msgstr ""
+
+msgctxt "#30015"
+msgid "Remove rating"
+msgstr ""
+
+msgctxt "#30016"
+msgid "Invalid TMDB user or password"
+msgstr ""
+
+msgctxt "#30017"
+msgid "Title not found at TMDB"
+msgstr ""
