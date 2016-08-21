@@ -254,7 +254,9 @@ if addon.getSetting('session_id')=='':
 	if getSession() == True: 
 		basePARM = basePARM + '&session_id=' + addon.getSetting('session_id')
 		Main()
-	else: xbmc.executebuiltin('Notification(' + lang(30016) + ',)')
+	else:
+		xbmc.executebuiltin('Notification(' + lang(30016) + ',)')
+		xbmcaddon.Addon().openSettings() 
 else:
 	basePARM = basePARM + '&session_id=' + addon.getSetting('session_id')
 	Main()

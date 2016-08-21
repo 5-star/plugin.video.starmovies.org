@@ -62,7 +62,7 @@ msgid "Remove rating"
 msgstr ""
 
 msgctxt "#30016"
-msgid "Invalid TMDB user or password"
+msgid "Set your TMDB user and password"
 msgstr ""
 
 msgctxt "#30017"

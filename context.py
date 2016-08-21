@@ -12,8 +12,28 @@ addon = xbmcaddon.Addon()
 lang = addon.getLocalizedString
 
 baseURL = 'http://api.themoviedb.org/3/'
-basePARM = '?api_key=fb77526161109488c45abd0f75960a0f&session_id=' + addon.getSetting('session_id')
+basePARM = '?api_key=fb77526161109488c45abd0f75960a0f'
 HEADERS = {'Accept': 'application/json','Content-Type': 'application/json'}
+
+def getRequest(url, parm):
+	request = urllib2.Request(baseURL+url+basePARM+parm)
+	response = json.load(urllib2.urlopen(request))
+	return response
+
+def getSession():
+	try:
+		sts = False
+		rsp = getRequest('authentication/token/new','')
+		if 'success' in rsp and rsp['success']==True	:
+			rsp = getRequest('authentication/token/validate_with_login','&request_token='+rsp['request_token']+'&username='+addon.getSetting('tmdb_user')+'&password='+addon.getSetting('tmdb_password'))
+			if 'success' in rsp and rsp['success']==True:
+				rsp = getRequest('authentication/session/new','&request_token='+rsp['request_token'])
+				if 'success' in rsp and rsp['success']==True:
+					addon.setSetting('session_id', rsp['session_id'])
+					sts = True
+		return sts
+	except:
+		return False
 
 def getTMDBbyId(dbtype, IMDBNumber):
 	tmdbId = ''
@@ -112,4 +132,13 @@ def main():
 		prompt(dbid, dbtype, tmdbId)
 
 if __name__ == '__main__':
-	main()
+	if addon.getSetting('session_id')=='':
+		if getSession() == True: 
+			basePARM = basePARM + '&session_id=' + addon.getSetting('session_id')
+			main()
+		else:
+			xbmc.executebuiltin('Notification(' + lang(30016) + ',)')
+			xbmcaddon.Addon().openSettings() 
+	else:
+		basePARM = basePARM + '&session_id=' + addon.getSetting('session_id')
+		main()
