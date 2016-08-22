@@ -15,7 +15,6 @@ addon = xbmcaddon.Addon()
 addon_handle = int(sys.argv[1])
 args = urlparse.parse_qs(sys.argv[2][1:])
 menu = args.get('menu', ['None'])[0]
-list_size = int(addon.getSetting('list_size'))
 lang = addon.getLocalizedString
 baseURL = 'http://api.themoviedb.org/3/'
 basePARM = '?api_key=fb77526161109488c45abd0f75960a0f'
@@ -227,7 +226,9 @@ def Main():
 		list_movies("account/id/favorite/movies","movies", False)
 	elif menu == 'favoriteTv':
 		list_tv("account/id/favorite/tv","episodes", False)
-	elif menu == 'KodiTv':
+	elif menu == 'KodiRated':
+		listId = args.get('id', None)[0]
+	elif menu == 'KodiMovie':
 		listId = args.get('id', None)[0]
 		kodiMovie = get_xbmc_movies()
 		tmdbMovie = getMultiPage(baseURL+"list/"+listId+basePARM, True)

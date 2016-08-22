@@ -1,10 +1,6 @@
 msgid ""
 msgstr ""
 
-msgctxt "#30001"
-msgid "Number of lines"
-msgstr ""
-
 msgctxt "#30002"
 msgid "Tmdb User"
 msgstr ""
