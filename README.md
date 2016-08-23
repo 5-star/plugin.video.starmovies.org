@@ -1,9 +1,13 @@
-plugin.video.last_viewed
+plugin.video.5star_movies
 ------------------------
 
-A Kodi add-on that lists the last movies, episodes, music videos and songs played. There is no easier way to go back to what you have seen or listened on the last few days. You can play it again, rate it or review the details with a couple of clicks.
+A Kodi Addon to display and manage themoviedb lists and ratings
 
-I looked everywhere for an addon that did this, and there was none. It is possible to make a few playlists to produce a list of last played, but if you have a filter active to hide what is already watched, it will force you to disable and enable the filter each time you go to the playlist. And most people will appreciate the bonus of not having to learn how to make those playlists, just install this addon et voilá! 
+Usage
+-----
+
+Settings:
+---------
 
 Installation
 ------------
@@ -15,4 +19,4 @@ Installation
  
 Release history
 ---------------
-  * 2016-06-10 v 1.0.1 Initial release
+  * 2016-09-01 v 1.0.1 Initial release
