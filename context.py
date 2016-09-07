@@ -62,11 +62,25 @@ def getTMDBbyName(dbtype, title, year):
 		if response["total_results"]!=0: tmdbId = response["results"][0]["id"]
 	return tmdbId
 
-def tmdbRated(rating, dbid, dbtype, tmdbId):
+def tmdbRated(rating, dbid, dbtype, tmdbId, title):
 	if rating>10: rating=0
 	if dbtype=='movie':
+		if int(dbid)<0 and tmdbId!="":
+			request = {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": { "filter": {"field": "title", "operator": "is", "value": title}, "limits": { "start" : 0, "end": 0 }, "properties" : ["imdbnumber"] }, "id": "1"}
+			response = json.loads(xbmc.executeJSONRPC(json.dumps(request, encoding='utf-8')))
+			if "result" in response and "movies" in response["result"]:
+				movies = response["result"]["movies"][0]
+				dbid= movies["movieid"]
 		request = '{"jsonrpc": "2.0", "id": 1, "method": "VideoLibrary.SetMovieDetails", "params": {"movieid" : ' + str(dbid) + ', "userrating": ' + str(rating) + '}}'
 	else:
+		xbmc.log("dbid "+dbid,3)
+		xbmc.log("tmdbid "+tmdbId,3)
+		if int(dbid)<0 and tmdbId!="":
+			request = {"jsonrpc": "2.0", "method": "VideoLibrary.GetTVShows", "params": { "filter": {"field": "title", "operator": "is", "value": title}, "limits": { "start" : 0, "end": 0 }, "properties" : ["imdbnumber"] }, "id": "1"}
+			response = json.loads(xbmc.executeJSONRPC(json.dumps(request, encoding='utf-8')))
+			if "result" in response and "tvshows" in response["result"]:
+				tvshows = response["result"]["tvshows"][0]
+				dbid= movies["tvshowid"]
 		request = '{"jsonrpc": "2.0", "id": 1, "method": "VideoLibrary.SetTvShowDetails", "params": {"tvshowid" : ' + str(dbid) + ', "userrating": ' + str(rating) + '}}'
 	response = json.loads(xbmc.executeJSONRPC(request))
 
@@ -84,7 +98,7 @@ def tmdbWatchFav(list, dbtype, tmdbId, state):
 	response = json.loads(urllib2.urlopen(request, timeout=3).read())
 	xbmc.executebuiltin('Notification(' + lang(30010) + ',' + response["status_message"] + ')')
 
-def prompt(dbid, dbtype, tmdbId):
+def prompt(dbid, dbtype, tmdbId, title):
 	request = urllib2.Request(baseURL + dbtype + '/'+ str(tmdbId) + '/account_states' + basePARM)
 	response = json.loads(urllib2.urlopen(request, timeout=3).read())
 	if str(response["watchlist"])=='False':
@@ -102,7 +116,7 @@ def prompt(dbid, dbtype, tmdbId):
 	if str(response["rated"])!='False': pList.append(lang(30015))
 	for i in reversed(range(1, 11)):
 		pList.append(str(i)) 
-	sel = xbmcgui.Dialog().select(lang(30010), pList)
+	sel = xbmcgui.Dialog().select(lang(30010)+" - "+title, pList)
 	if sel == -1: return
 	elif sel == 0:
 		tmdbWatchFav("watchlist", dbtype, tmdbId, watchSts)
@@ -113,7 +127,7 @@ def prompt(dbid, dbtype, tmdbId):
 			rating = 0
 		else:
 			rating = int(pList[sel])
-		tmdbRated(rating, dbid, dbtype, tmdbId)
+		tmdbRated(rating, dbid, dbtype, tmdbId, title)
 
 def main():
 	dbid=xbmc.getInfoLabel('ListItem.DBID')
@@ -121,15 +135,20 @@ def main():
 	IMDBNumber = xbmc.getInfoLabel('ListItem.IMDBNumber')
 	if dbtype=='tvshow': dbtype='tv'
 
-	if str(IMDBNumber) == '':
-		tmdbId = getTMDBbyName(dbtype, xbmc.getInfoLabel('ListItem.Title'), xbmc.getInfoLabel('ListItem.Year'))
-	else:
-		tmdbId = getTMDBbyId(dbtype, IMDBNumber)
+	tit = xbmc.getInfoLabel('ListItem.Title')
+	if (tit==""): tit = xbmc.getInfoLabel('ListItem.Label')
+
+	tmdbId = xbmc.getInfoLabel('ListItem.Top250');
+	if str(tmdbId) == '':
+		if str(IMDBNumber) == '':
+			tmdbId = getTMDBbyName(dbtype, tit, xbmc.getInfoLabel('ListItem.Year'))
+		else:
+			tmdbId = getTMDBbyId(dbtype, IMDBNumber)
 	
 	if str(tmdbId) == '':
 		xbmc.executebuiltin('Notification(' + lang(30010) + ',' + lang(30017) + ')')
 	else:
-		prompt(dbid, dbtype, tmdbId)
+		prompt(dbid, dbtype, tmdbId, tit.decode("utf-8"))
 
 if __name__ == '__main__':
 	if addon.getSetting('session_id')=='':
@@ -142,3 +161,4 @@ if __name__ == '__main__':
 	else:
 		basePARM = basePARM + '&session_id=' + addon.getSetting('session_id')
 		main()
+	

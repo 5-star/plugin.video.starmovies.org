@@ -10,6 +10,7 @@ import ctypes
 from copy import deepcopy
 from xbmcgui import ListItem
 from xbmcplugin import addDirectoryItem, endOfDirectory
+import urlresolver
 
 addon = xbmcaddon.Addon()
 addon_handle = int(sys.argv[1])
@@ -64,7 +65,7 @@ def get_xbmc_movies():
 	movies = jsonrpc(query)['result'].get("movies", [])
 	kodiMovie = []
 	for movie in movies:
-		kodiMovie.append([movie["imdbnumber"], movie["file"], movie["userrating"], movie["title"] ])			
+		kodiMovie.append([movie["imdbnumber"], movie["file"], movie["userrating"], movie["title"] ])
 	return kodiMovie
 
 def get_xbmc_tv():
@@ -96,15 +97,25 @@ def getMultiPage(url, lista):
 	return js
 
 def list_movies(url, type, lista):
+	ur1 = urlresolver.HostedMediaFile(url='http://vodlocker.com/8et8git7xngv')
+	ur2 = urlresolver.HostedMediaFile(url='https://r19---sn-aigllndk.googlevideo.com/videoplayback?id=33e92d39f523ae09&itag=37&source=webdrive&begin=0&requiressl=yes&hcs=yes&mm=30&mn=sn-aigllndk&ms=nxu&mv=m&nh=IgpwcjAxLmxocjI1KhgyMDAxOjQ4NjA6MToxOjA6MjFkMTowOjE&pl=32&sc=yes&shardbypass=yes&mime=video/mp4&lmt=1472778731841713&mt=1473189454&ip=2001:8a0:6d08:f01:1878:3ac:9a39:f50c&ipbits=48&expire=1473218524&sparams=ip,ipbits,expire,id,itag,source,requiressl,hcs,mm,mn,ms,mv,nh,pl,sc,shardbypass,mime,lmt&signature=2407A8FC3E8575E2C4BF44FEA13F013E8E76F7B1.735EE88CE86F24CD8DDF63A3633019E4C9832F44&key=ck2', title='bigodes')
+	ur3 = urlresolver.HostedMediaFile(url='https://redirector.googlevideo.com/videoplayback?requiressl=yes&id=32263fea983fb2dc&itag=37&source=webdrive&ttl=transient&app=explorer&ip=2a05:840::e098&ipbits=0&expire=1473010466&sparams=requiressl,id,itag,source,ttl,ip,ipbits,expire&signature=757E42C8865EFEBD088899FE66DDC35B73C0B5B6.7602B1003267C3D4918C6C212E224403A583D22F&key=ck2&mm=31&mn=sn-5hne6nls&ms=au&mt=1472995489&mv=u&nh=IgpwcjA0LmFtczE1KgkxMjcuMC4wLjE&pl=48', title='bigodes')
+	urr = ur1.resolve()
+	if urr==False: urr=""
+	urr="plugin://plugin.video.exodus/?action=playItem&title=Jason+Bourne&source=%5B%7B%22debrid%22%3A+%22%22%2C+%22url%22%3A+%22http%3A%2F%2Fmovie4k.to%2FJason-Bourne-watch-movie-7361541.html%22%2C+%22debridonly%22%3A+false%2C+%22direct%22%3A+false%2C+%22label%22%3A+%22359+%7C+%5BB%5DMOVIE4K%5B%2FB%5D+%7C+ALLMYVIDEOS+%22%2C+%22source%22%3A+%22allmyvideos.net%22%2C+%22provider%22%3A+%22Movie4K%22%2C+%22quality%22%3A+%22SD%22%7D%5D"
+	xbmc.log("#123 stream_url "+urr,3)
+	urr2 = urlresolver.resolve('http://vodlocker.com/8et8git7xngv') 
+	xbmc.log("#123 web url "+urr2,3)
 	xbmcplugin.setContent(addon_handle, "movies")
-	for item in getMultiPage(baseURL+url+basePARM, lista):
-		infolabels={'title': item['title'], 'year': item['release_date'], 'rating': item['vote_average'], "mediatype": 'movie'}
+	parm = "&sort_by=created_at.desc"
+	for item in getMultiPage(baseURL+url+basePARM+parm, lista):
+		infolabels={'Top250': item['id'], 'title': item['title'], 'year': item['release_date'], 'rating': item['vote_average'], "mediatype": 'movie'}
 		li = ListItem(infolabels['title'])
 		li.setInfo('video', infolabels)
 		li.setProperty('IsPlayable', 'true')
 		if item['poster_path']!=None:
 			li.setArt({ "poster" : "http://image.tmdb.org/t/p/w500"+item['poster_path']})
-		addDirectoryItem(addon_handle, url, li, isFolder=False)
+		addDirectoryItem(addon_handle, urr, li, isFolder=False)
 	endOfDirectory(addon_handle)
 
 def list_rated_movies(url, type, lista):
@@ -112,7 +123,8 @@ def list_rated_movies(url, type, lista):
 	# gets the full list of movies in kodi
 	kodiMovie = get_xbmc_movies()
 	# for each TMDB movie
-	for item in getMultiPage(baseURL+url+basePARM, lista):
+	parm = "&sort_by=created_at.desc"
+	for item in getMultiPage(baseURL+url+basePARM+parm, lista):
 		# TMDB has maximum access per minute, so wait...
 		time.sleep(0.05)
 		# get the imdb id from TMDB
@@ -132,9 +144,8 @@ def list_rated_movies(url, type, lista):
 				else:
 					userrating = ''
 				km[2]=0
-		title = title + userrating
-		infolabels={'title': title, 'year': item['release_date'], 'rating': item['rating'], "mediatype": 'movie'}
-		li = ListItem(infolabels['title'])
+		infolabels={'Top250': item['id'], 'title': title, 'year': item['release_date'], 'rating': item['rating'], "mediatype": 'movie'}
+		li = ListItem(title + userrating)
 		li.setInfo('video', infolabels)
 		li.setProperty('IsPlayable', 'true')
 		if userrating == '*':
@@ -145,15 +156,16 @@ def list_rated_movies(url, type, lista):
 	# rated movies in kodi which does not exist in tmdb
 	for km in kodiMovie:
 		if km[2]!=0:
-			infolabels={'title': km[3]+' - Rating '+str(km[2]) + ' not in TMDB', 'rating': km[2], "mediatype": 'movie'}
-			li = ListItem(infolabels['title'])
+			infolabels={'title': km[3], 'rating': km[2], "mediatype": 'movie'}
+			li = ListItem(km[3]+' - Rating '+str(km[2]) + ' not in TMDB')
 			addDirectoryItem(addon_handle, km[1], li, isFolder=False)
 	endOfDirectory(addon_handle)
 	
 def list_tv(url, type, lista):
 	xbmcplugin.setContent(addon_handle, "tvshows")
-	for item in getMultiPage(baseURL+url+basePARM, lista):
-		infolabels={'name': item['name'], 'year': item['first_air_date'], 'rating': item['vote_average'], "mediatype": 'tvshow'}
+	parm = "&sort_by=created_at.desc"
+	for item in getMultiPage(baseURL+url+basePARM+parm, lista):
+		infolabels={'Top250': item['id'], 'name': item['name'], 'year': item['first_air_date'], 'rating': item['vote_average'], "mediatype": 'tvshow'}
 		li = ListItem(infolabels['name'])
 		li.setInfo('video', infolabels)
 		li.setProperty('IsPlayable', 'true')
@@ -166,7 +178,8 @@ def list_rated_tv(url, type, lista):
 	# gets the full list of shows in kodi
 	kodiTv = get_xbmc_tv()
 	# for each TMDB show
-	for item in getMultiPage(baseURL+url+basePARM, lista):
+	parm = "&sort_by=created_at.desc"
+	for item in getMultiPage(baseURL+url+basePARM+parm, lista):
 		# TMDB has maximum access per minute, so wait...
 		time.sleep(0.05)
 		# get the imdb id from TMDB
@@ -184,9 +197,8 @@ def list_rated_tv(url, type, lista):
 				else:
 					userrating = ''
 				tv[2]=0
-		name = item['name'] + userrating
-		infolabels={'name': name, 'year': item['first_air_date'], 'rating': item['rating'], "mediatype": 'tvshow'}
-		li = ListItem(infolabels['name'])
+		infolabels={'Top250': item['id'], 'name': item['name'], 'year': item['first_air_date'], 'rating': item['rating'], "mediatype": 'tvshow'}
+		li = ListItem(item['name'] + userrating)
 		li.setInfo('video', infolabels)
 		li.setProperty('IsPlayable', 'true')
 		li.setArt({ "poster" : "http://image.tmdb.org/t/p/w500"+item['poster_path']})
@@ -194,8 +206,8 @@ def list_rated_tv(url, type, lista):
 	# rated movies in kodi which does not exist in tmdb
 	for tv in kodiTv:
 		if tv[2]!=0:
-			infolabels={'title': tv[3]+' - Rating: Kodi='+str(tv[2]), 'rating': tv[2], "mediatype": 'tvshow'}
-			li = ListItem(infolabels['title'])
+			infolabels={'title': tv[3], 'rating': tv[2], "mediatype": 'tvshow'}
+			li = ListItem(tv[3]+' - Rating: Kodi='+str(tv[2]))
 			addDirectoryItem(addon_handle, tv[1], li, isFolder=False)
 	endOfDirectory(addon_handle)
 
