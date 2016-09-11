@@ -111,7 +111,7 @@ def list_movies(url, type, lista):
 		li.setProperty('IsPlayable', 'true')
 		if item['poster_path']!=None:
 			li.setArt({ "poster" : "http://image.tmdb.org/t/p/w500"+item['poster_path']})
-		addDirectoryItem(addon_handle, urr, li, isFolder=False)
+		addDirectoryItem(addon_handle, url, li, isFolder=False)
 	endOfDirectory(addon_handle)
 
 
