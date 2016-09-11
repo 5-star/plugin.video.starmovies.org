@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys, os, re
 import json
 import time
@@ -96,16 +97,11 @@ def getMultiPage(url, lista):
 			js.append(deepcopy(item))
 	return js
 
+def play_track(id):
+    li = xbmcgui.ListItem(label="label")
+    xbmcplugin.setResolvedUrl(handle=int(sys.argv[1]), succeeded=True, listitem=li)
+	
 def list_movies(url, type, lista):
-	ur1 = urlresolver.HostedMediaFile(url='http://vodlocker.com/8et8git7xngv')
-	ur2 = urlresolver.HostedMediaFile(url='https://r19---sn-aigllndk.googlevideo.com/videoplayback?id=33e92d39f523ae09&itag=37&source=webdrive&begin=0&requiressl=yes&hcs=yes&mm=30&mn=sn-aigllndk&ms=nxu&mv=m&nh=IgpwcjAxLmxocjI1KhgyMDAxOjQ4NjA6MToxOjA6MjFkMTowOjE&pl=32&sc=yes&shardbypass=yes&mime=video/mp4&lmt=1472778731841713&mt=1473189454&ip=2001:8a0:6d08:f01:1878:3ac:9a39:f50c&ipbits=48&expire=1473218524&sparams=ip,ipbits,expire,id,itag,source,requiressl,hcs,mm,mn,ms,mv,nh,pl,sc,shardbypass,mime,lmt&signature=2407A8FC3E8575E2C4BF44FEA13F013E8E76F7B1.735EE88CE86F24CD8DDF63A3633019E4C9832F44&key=ck2', title='bigodes')
-	ur3 = urlresolver.HostedMediaFile(url='https://redirector.googlevideo.com/videoplayback?requiressl=yes&id=32263fea983fb2dc&itag=37&source=webdrive&ttl=transient&app=explorer&ip=2a05:840::e098&ipbits=0&expire=1473010466&sparams=requiressl,id,itag,source,ttl,ip,ipbits,expire&signature=757E42C8865EFEBD088899FE66DDC35B73C0B5B6.7602B1003267C3D4918C6C212E224403A583D22F&key=ck2&mm=31&mn=sn-5hne6nls&ms=au&mt=1472995489&mv=u&nh=IgpwcjA0LmFtczE1KgkxMjcuMC4wLjE&pl=48', title='bigodes')
-	urr = ur1.resolve()
-	if urr==False: urr=""
-	urr="plugin://plugin.video.exodus/?action=playItem&title=Jason+Bourne&source=%5B%7B%22debrid%22%3A+%22%22%2C+%22url%22%3A+%22http%3A%2F%2Fmovie4k.to%2FJason-Bourne-watch-movie-7361541.html%22%2C+%22debridonly%22%3A+false%2C+%22direct%22%3A+false%2C+%22label%22%3A+%22359+%7C+%5BB%5DMOVIE4K%5B%2FB%5D+%7C+ALLMYVIDEOS+%22%2C+%22source%22%3A+%22allmyvideos.net%22%2C+%22provider%22%3A+%22Movie4K%22%2C+%22quality%22%3A+%22SD%22%7D%5D"
-	xbmc.log("#123 stream_url "+urr,3)
-	urr2 = urlresolver.resolve('http://vodlocker.com/8et8git7xngv') 
-	xbmc.log("#123 web url "+urr2,3)
 	xbmcplugin.setContent(addon_handle, "movies")
 	parm = "&sort_by=created_at.desc"
 	for item in getMultiPage(baseURL+url+basePARM+parm, lista):
@@ -117,6 +113,7 @@ def list_movies(url, type, lista):
 			li.setArt({ "poster" : "http://image.tmdb.org/t/p/w500"+item['poster_path']})
 		addDirectoryItem(addon_handle, urr, li, isFolder=False)
 	endOfDirectory(addon_handle)
+
 
 def list_rated_movies(url, type, lista):
 	xbmcplugin.setContent(addon_handle, "movies")
@@ -151,7 +148,6 @@ def list_rated_movies(url, type, lista):
 		if userrating == '*':
 			userrating = ' - Not on the Library'
 			li.setArt({ "poster" : "http://image.tmdb.org/t/p/w500"+item['poster_path']})
-		#xbmcplugin.setResolvedUrl(int(sys.argv[1]), True, liz)
 		addDirectoryItem(addon_handle, url, li, isFolder=False)
 	# rated movies in kodi which does not exist in tmdb
 	for km in kodiMovie:

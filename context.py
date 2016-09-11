@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import sys
 import json
@@ -73,8 +74,6 @@ def tmdbRated(rating, dbid, dbtype, tmdbId, title):
 				dbid= movies["movieid"]
 		request = '{"jsonrpc": "2.0", "id": 1, "method": "VideoLibrary.SetMovieDetails", "params": {"movieid" : ' + str(dbid) + ', "userrating": ' + str(rating) + '}}'
 	else:
-		xbmc.log("dbid "+dbid,3)
-		xbmc.log("tmdbid "+tmdbId,3)
 		if int(dbid)<0 and tmdbId!="":
 			request = {"jsonrpc": "2.0", "method": "VideoLibrary.GetTVShows", "params": { "filter": {"field": "title", "operator": "is", "value": title}, "limits": { "start" : 0, "end": 0 }, "properties" : ["imdbnumber"] }, "id": "1"}
 			response = json.loads(xbmc.executeJSONRPC(json.dumps(request, encoding='utf-8')))
