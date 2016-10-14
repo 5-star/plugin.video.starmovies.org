@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
-    <setting id="tmdb_user" label="30002" type="text" default="" />
-    <setting id="tmdb_password" label="30003" option="hidden" type="text" default="" />
-    <setting id="session_id" type="text" visible="false" default="" />
+    <setting id="usr" label="30002" type="text" default="" />
+    <setting id="pwd" label="30003" option="hidden" type="text" default="" />
 </settings>

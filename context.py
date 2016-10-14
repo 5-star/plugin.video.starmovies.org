@@ -53,6 +53,7 @@ def getTMDBbyName(dbtype, title, year):
 	tmdbId = ''
 	if dbtype!='tv':
 		url = baseURL + 'search/' + dbtype + basePARM + "&query=" + title.replace(" ","%20") + "&year=" + year
+		xbmc.log(url)
 		request = urllib2.Request(url=url, data=json.dumps(data), headers=HEADERS)
 		response = json.loads(urllib2.urlopen(request, timeout=3).read())
 		if response["total_results"]!=0: tmdbId = response["results"][0]["id"]
@@ -137,6 +138,7 @@ def main():
 	tit = xbmc.getInfoLabel('ListItem.Title')
 	if (tit==""): tit = xbmc.getInfoLabel('ListItem.Label')
 
+	
 	tmdbId = xbmc.getInfoLabel('ListItem.Top250');
 	if str(tmdbId) == '':
 		if str(IMDBNumber) == '':

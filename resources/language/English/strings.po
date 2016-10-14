@@ -2,11 +2,11 @@ msgid ""
 msgstr ""
 
 msgctxt "#30002"
-msgid "Tmdb User"
+msgid "5 Star-Movies User"
 msgstr ""
 
 msgctxt "#30003"
-msgid "Tmdb Password"
+msgid "5 Star-Movies Password"
 msgstr ""
 
 msgctxt "#30004"
@@ -34,7 +34,7 @@ msgid "Favorite Tv"
 msgstr ""
 
 msgctxt "#30010"
-msgid "Rate at TMDB"
+msgid "Rate at 5 Star-Movies"
 msgstr ""
 
 msgctxt "#30011"
@@ -58,7 +58,7 @@ msgid "Remove rating"
 msgstr ""
 
 msgctxt "#30016"
-msgid "Set your TMDB user and password"
+msgid "Set your user and password"
 msgstr ""
 
 msgctxt "#30017"
