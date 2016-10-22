@@ -2,11 +2,11 @@ msgid ""
 msgstr ""
 
 msgctxt "#30002"
-msgid "5 Star-Movies User"
+msgid "User"
 msgstr ""
 
 msgctxt "#30003"
-msgid "5 Star-Movies Password"
+msgid "Password"
 msgstr ""
 
 msgctxt "#30004"
@@ -63,4 +63,20 @@ msgstr ""
 
 msgctxt "#30017"
 msgid "Title not found at TMDB"
+msgstr ""
+
+msgctxt "#30018"
+msgid "Watched Movies"
+msgstr ""
+
+msgctxt "#30019"
+msgid "Watched Tv"
+msgstr ""
+
+msgctxt "#30020"
+msgid "Collection Movies"
+msgstr ""
+
+msgctxt "#30021"
+msgid "Collection Tv"
 msgstr ""

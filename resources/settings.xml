@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
-    <setting id="usr" label="30002" type="text" default="" />
-    <setting id="pwd" label="30003" option="hidden" type="text" default="" />
+
+	<category label="5star">
+		<setting id="usr" label="30002" type="text" default="" />
+		<setting id="pwd" label="30003" option="hidden" type="text" default="" />
+	</category>
+
+	<category label="Synch Kodi to 5star">
+		<setting label="30020" type="action" action="RunScript($CWD/resources/synch.py,collection,M)" />
+		<setting label="30021" type="action" action="RunScript($CWD/resources/synch.py,collection,S)" />
+		<setting label="30004" type="action" action="RunScript($CWD/resources/synch.py,rated,M)" />
+		<setting label="30005" type="action" action="RunScript($CWD/resources/synch.py,rated,S)" />
+		<setting label="30018" type="action" action="RunScript($CWD/resources/synch.py,watched,M)" />
+		<setting label="30019" type="action" action="RunScript($CWD/resources/synch.py,watched,S)" />
+	 </category>
+
 </settings>
