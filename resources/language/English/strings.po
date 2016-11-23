@@ -80,3 +80,11 @@ msgstr ""
 msgctxt "#30021"
 msgid "Collection Tv"
 msgstr ""
+
+msgctxt "#30022"
+msgid "Mark as watched"
+msgstr ""
+
+msgctxt "#30023"
+msgid "Mark as Unwatched"
+msgstr ""
