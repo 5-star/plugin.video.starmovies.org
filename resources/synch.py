@@ -65,8 +65,9 @@ def synchCollection(videoType):
 	movies = movies.replace("½","")
 	movies = movies.replace("ø","")
 	data = {'videoType': videoType, 'usr': urllib.quote(usr), 'pwd': urllib.quote(pwd), 'json': movies}
+	xbmc.log(str(data), 3)
 	try:
-		request = urllib2.Request("http://www.5star-movies.com/WebService.asmx/synchCollection")
+		request = urllib2.Request("https://www.5star-movies.com/WebService.asmx/synchCollection")
 		request.add_header('Content-Type','application/json')
 		response = urllib2.urlopen(request, str(data))
 		xbmc.log(response.read(),3)
@@ -85,7 +86,7 @@ def synch(listType, videoType):
 	
 	for movie in movies:
 		if movie["imdbnumber"]!="" and (listType=="collection" or (listType=="watched" and movie["playcount"]>0) or (listType=="rated" and movie["userrating"]>0)):
-			url = "http://www.5star-movies.com/WebService.asmx/synchList?listType=" + listType + "&videoType=" + videoType
+			url = "https://www.5star-movies.com/WebService.asmx/synchList?listType=" + listType + "&videoType=" + videoType
 			url = url + "&usr=" + urllib.quote(addon.getSetting('tmdb_user').encode("utf-8"))
 			url = url + "&pwd=" + addon.getSetting('tmdb_password')
 			if videoType=="M":
