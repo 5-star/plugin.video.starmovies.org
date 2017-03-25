@@ -67,7 +67,7 @@ def synchCollection(videoType):
 	data = {'videoType': videoType, 'usr': urllib.quote(usr), 'pwd': urllib.quote(pwd), 'json': movies}
 	xbmc.log(str(data), 3)
 	try:
-		request = urllib2.Request("https://www.5star-movies.com/WebService.asmx/synchCollection")
+		request = urllib2.Request("https://5star-movies.com/WebService.asmx/synchCollection")
 		request.add_header('Content-Type','application/json')
 		response = urllib2.urlopen(request, str(data))
 		xbmc.log(response.read(),3)

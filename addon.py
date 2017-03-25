@@ -30,7 +30,7 @@ def list_items(listType, videoType, order):
 	else:
 		dbType="movie"
 		xbmcplugin.setContent(addon_handle, "movies")	
-	url = "https://www.5star-movies.com/WebService.asmx/getList?listType="+listType+"&videoType="+videoType+"&order="+order+"&pg=0&pgSize=5000&usr="+addon.getSetting('usr')+"&pwd="+addon.getSetting('pwd')
+	url = "https://5star-movies.com/WebService.asmx/getList?listType="+listType+"&videoType="+videoType+"&order="+order+"&pg=0&pgSize=5000&usr="+addon.getSetting('usr')+"&pwd="+addon.getSetting('pwd')
 	for item in getRequest(url):
 		if listType=="watched" and videoType=="S" and item["season"]!=None:
 			title="s"+str(item["episode"])+"e"+str(item["season"])+" "+str(item["episodetitle"])+" - "+item["title"]
