@@ -86,7 +86,7 @@ def synch(listType, videoType):
 	
 	for movie in movies:
 		if movie["imdbnumber"]!="" and (listType=="collection" or (listType=="watched" and movie["playcount"]>0) or (listType=="rated" and movie["userrating"]>0)):
-			url = "https://www.5star-movies.com/WebService.asmx/synchList?listType=" + listType + "&videoType=" + videoType
+			url = "https://5star-movies.com/WebService.asmx/synchList?listType=" + listType + "&videoType=" + videoType
 			url = url + "&usr=" + urllib.quote(addon.getSetting('tmdb_user').encode("utf-8"))
 			url = url + "&pwd=" + addon.getSetting('tmdb_password')
 			if videoType=="M":

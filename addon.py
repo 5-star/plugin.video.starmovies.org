@@ -42,7 +42,7 @@ def list_items(listType, videoType, order):
 		li.setArt({ "thumbnail" : item["poster"].strip() })
 		li.setArt({ "fanart" : item["backdrop"].strip() })		
 		li.setProperty('IsPlayable', 'true')
-		li.setArt({ "poster" : "http://image.tmdb.org/t/p/w500"+item['poster']})
+		li.setArt({ "poster" : "https://image.tmdb.org/t/p/w500"+item['poster']})
 		addDirectoryItem(addon_handle, item['link'], li, isFolder=False)
 	endOfDirectory(addon_handle)
 
