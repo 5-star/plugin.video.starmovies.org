@@ -15,7 +15,7 @@ else:
 	if not os.path.exists(txtpath):
 		os.makedirs(txtpath)
 txtfile = txtpath + "lastPlayed.json"
-starmovies = addon.getSetting('starmovies')
+starmovies = addon.getSetting('starmovies.org')
 enable_debug = addon.getSetting('enable_debug')
 lang = addon.getLocalizedString
 

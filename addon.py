@@ -19,10 +19,13 @@ def setUrl(pQuery):
 	return sys.argv[0] + '?' + urllib.urlencode(pQuery)
 
 def getRequest(url):
-	request = urllib2.Request(url)
-	response = json.load(urllib2.urlopen(request))
-	return response
-
+	try:
+		request = urllib2.Request(url)
+		response = json.load(urllib2.urlopen(request))
+		return response
+	except Exception as e:
+		xbmc.log(e.message,3)
+		
 def list_items(listType, videoType, order):
 	if videoType=="S":
 		dbType="tvshow"
@@ -31,19 +34,24 @@ def list_items(listType, videoType, order):
 		dbType="movie"
 		xbmcplugin.setContent(addon_handle, "movies")	
 	url = "https://www.starmovies.org/WebService.asmx/getList?listType="+listType+"&videoType="+videoType+"&order="+order+"&pg=0&pgSize=5000&usr="+addon.getSetting('usr')+"&pwd="+addon.getSetting('pwd')
-	for item in getRequest(url):
-		if listType=="watched" and videoType=="S" and item["season"]!=None:
-			title="s"+str(item["episode"])+"e"+str(item["season"])+" "+str(item["episodetitle"])+" - "+item["title"]
-		else: title=item["title"]
-		infolabels={'Top250': item['tmdbId'], 'IMDBNumber': item['imdbId'], 'title': title, 'year': item['release_date'], 'rating': item['userrating'], "mediatype": dbType}
-		li = ListItem(title)
-		li.setInfo('video', infolabels)
-		li.setArt({ "poster" : item["poster"].strip() })
-		li.setArt({ "thumbnail" : item["poster"].strip() })
-		li.setArt({ "fanart" : item["backdrop"].strip() })		
-		li.setProperty('IsPlayable', 'true')
-		li.setArt({ "poster" : "https://image.tmdb.org/t/p/w500"+item['poster']})
-		addDirectoryItem(addon_handle, item['link'], li, isFolder=False)
+	items = getRequest(url)
+	if items==None:
+		li = ListItem("Check settings user or password")
+		addDirectoryItem(addon_handle, "", li, isFolder=False)
+	else:
+		for item in items:
+			if listType=="watched" and videoType=="S" and item["season"]!=None:
+				title="s"+str(item["episode"])+"e"+str(item["season"])+" "+str(item["episodetitle"])+" - "+item["title"]
+			else: title=item["title"]
+			infolabels={'Top250': item['tmdbId'], 'IMDBNumber': item['imdbId'], 'title': title, 'year': item['release_date'], 'rating': item['userrating'], "mediatype": dbType}
+			li = ListItem(title)
+			li.setInfo('video', infolabels)
+			li.setArt({ "poster" : item["poster"].strip() })
+			li.setArt({ "thumbnail" : item["poster"].strip() })
+			li.setArt({ "fanart" : item["backdrop"].strip() })		
+			li.setProperty('IsPlayable', 'true')
+			li.setArt({ "poster" : "https://image.tmdb.org/t/p/w500"+item['poster']})
+			addDirectoryItem(addon_handle, item['link'], li, isFolder=False)
 	endOfDirectory(addon_handle)
 
 def Main():

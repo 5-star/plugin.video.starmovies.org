@@ -30,8 +30,8 @@ def synchCollection(videoType):
 	else:
 		query = {'jsonrpc': '2.0','id': 0,'method': 'VideoLibrary.GetTvShows','params': {'properties': ['imdbnumber', 'userrating', 'playcount', 'lastplayed', 'dateadded', 'file'] } }
 		movies = "[" + jsonrpc2(query) + "]"
-	usr = addon.getSetting('tmdb_user').encode("utf-8")
-	pwd = addon.getSetting('tmdb_password').encode("utf-8")
+	usr = addon.getSetting('usr').encode("utf-8")
+	pwd = addon.getSetting('pwd').encode("utf-8")
 	movies = movies.replace("ã","a")
 	movies = movies.replace("â","a")
 	movies = movies.replace("ä","a")

@@ -66,7 +66,6 @@ def synchCollection(videoType):
 		request = urllib2.Request("https://www.starmovies.org/WebService.asmx/synchCollection")
 		request.add_header('Content-Type','application/json')
 		response = urllib2.urlopen(request, str(data))
-		xbmc.log(response.read(),3)
 	except urllib2.HTTPError, error:
 		xbmc.log(error.read(),3)
 
