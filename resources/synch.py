@@ -67,7 +67,7 @@ def synchCollection(videoType):
 	data = {'videoType': videoType, 'usr': urllib.quote(usr), 'pwd': urllib.quote(pwd), 'json': movies}
 	xbmc.log(str(data), 3)
 	try:
-		request = urllib2.Request("https://5star-movies.com/WebService.asmx/synchCollection")
+		request = urllib2.Request("https://www.starmovies.org/WebService.asmx/synchCollection")
 		request.add_header('Content-Type','application/json')
 		response = urllib2.urlopen(request, str(data))
 		xbmc.log(response.read(),3)
@@ -86,7 +86,7 @@ def synch(listType, videoType):
 	
 	for movie in movies:
 		if movie["imdbnumber"]!="" and (listType=="collection" or (listType=="watched" and movie["playcount"]>0) or (listType=="rated" and movie["userrating"]>0)):
-			url = "https://5star-movies.com/WebService.asmx/synchList?listType=" + listType + "&videoType=" + videoType
+			url = "https://www.starmovies.org/WebService.asmx/synchList?listType=" + listType + "&videoType=" + videoType
 			url = url + "&usr=" + urllib.quote(addon.getSetting('tmdb_user').encode("utf-8"))
 			url = url + "&pwd=" + addon.getSetting('tmdb_password')
 			if videoType=="M":
@@ -104,7 +104,7 @@ def synch(listType, videoType):
 			except:
 				xbmc.log(url.encode("utf-8"),3)
 
-addon = xbmcaddon.Addon("plugin.video.5star_movies")
+addon = xbmcaddon.Addon("plugin.video.starmovies.org")
 xbmc.executebuiltin('Notification(Synch started,'+sys.argv[1]+')')
 if sys.argv[1]=="collection":
 	synchCollection(sys.argv[2])

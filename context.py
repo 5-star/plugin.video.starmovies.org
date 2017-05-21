@@ -47,7 +47,7 @@ def getTMDBbyName(dbType, title, year):
 	return tmdbId
 
 def api(func, lstType, rating, videoType, tmdbId, kodiId, imdbId):
-	url = 'https://5star-movies.com/WebService.asmx/kodiMark?func='+ func + '&lstType=' + lstType +'&videoType=' + videoType + '&tmdbId=' + str(tmdbId) + '&imdbId='+imdbId+'&tvdbId=0&kodiId='+str(kodiId)+'&rating=' + str(rating) + '&usr='+USR+'&pwd='+PWD
+	url = 'https://www.starmovies.org/WebService.asmx/kodiMark?func='+ func + '&lstType=' + lstType +'&videoType=' + videoType + '&tmdbId=' + str(tmdbId) + '&imdbId='+imdbId+'&tvdbId=0&kodiId='+str(kodiId)+'&rating=' + str(rating) + '&usr='+USR+'&pwd='+PWD
 	request = urllib2.Request(url=url)
 	response = urllib2.urlopen(request, timeout=3).read()
 	xbmc.executebuiltin('Notification(' + lang(30010) + ',' + response + ')')
@@ -55,7 +55,7 @@ def api(func, lstType, rating, videoType, tmdbId, kodiId, imdbId):
 def prompt(dbid, dbType, tmdbId, title, imdbId):
 	if dbType=="tvshow": videoType="S"
 	else: videoType="M"
-	url="https://5star-movies.com/Webservice.asmx/getStates?videoType="+videoType+"&tmdbId="+str(tmdbId)+"&imdbId="+imdbId+"&usr="+USR+"&pwd="+PWD
+	url="https://www.starmovies.org/Webservice.asmx/getStates?videoType="+videoType+"&tmdbId="+str(tmdbId)+"&imdbId="+imdbId+"&usr="+USR+"&pwd="+PWD
 	request = urllib2.Request(url)
 	response = json.loads(urllib2.urlopen(request, timeout=3).read())
 	if str(response["watchlist"])=='None':

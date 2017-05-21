@@ -9,7 +9,7 @@ import xbmcaddon
 from xbmcgui import ListItem
 from xbmcplugin import addDirectoryItem, endOfDirectory
 
-addon = xbmcaddon.Addon("plugin.video.5star_movies")
+addon = xbmcaddon.Addon("plugin.video.starmovies.org")
 
 def jsonrpc(query):
 	return json.loads(xbmc.executeJSONRPC(json.dumps(query, encoding='utf-8')))
@@ -63,7 +63,7 @@ def synchCollection(videoType):
 	movies = movies.replace("ø","")
 	data = {'videoType': videoType, 'usr': urllib.quote(usr), 'pwd': urllib.quote(pwd), 'json': movies}
 	try:
-		request = urllib2.Request("https://5star-movies.com/WebService.asmx/synchCollection")
+		request = urllib2.Request("https://www.starmovies.org/WebService.asmx/synchCollection")
 		request.add_header('Content-Type','application/json')
 		response = urllib2.urlopen(request, str(data))
 		xbmc.log(response.read(),3)

@@ -1,5 +1,5 @@
-plugin.video.5star_movies
-------------------------
+plugin.video.starmovies.org
+---------------------------
 
 A Kodi Addon to display and manage themoviedb lists and ratings
 

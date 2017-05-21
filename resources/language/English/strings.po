@@ -34,7 +34,7 @@ msgid "Favorite Tv"
 msgstr ""
 
 msgctxt "#30010"
-msgid "Rate at 5 Star-Movies"
+msgid "Rate at StarMovies"
 msgstr ""
 
 msgctxt "#30011"
