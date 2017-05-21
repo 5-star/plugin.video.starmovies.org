@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.starmovies.org" name="Star Movies" version="1.0.2" provider-name="Luis Rodrigues">
+<addon id="plugin.video.starmovies.org" name="Star Movies" version="1.0.3" provider-name="Luis Rodrigues">
 	<requires>
 		<import addon="xbmc.python" version="2.1.0"/>
 	</requires>
