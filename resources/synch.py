@@ -64,18 +64,16 @@ def synchCollection(videoType):
 	movies = movies.replace("ñ","n")
 	movies = movies.replace("½","")
 	movies = movies.replace("ø","")
-	data = {'videoType': videoType, 'usr': urllib.quote(usr), 'pwd': urllib.quote(pwd), 'json': movies}
-	xbmc.log(str(data), 3)
+	query_args = {'videoType': videoType, 'usr': urllib.quote(usr), 'pwd': urllib.quote(pwd), 'json': movies}
+	data = urllib.urlencode(query_args)
 	try:
-		request = urllib2.Request("https://www.starmovies.org/WebService.asmx/synchCollection")
-		request.add_header('Content-Type','application/json')
-		response = urllib2.urlopen(request, str(data))
-		xbmc.log(response.read(),3)
+		request = urllib2.Request("https://www.starmovies.org/WebService.asmx/synchCollection", data)
+		#request.add_header('Content-Type','application/json')
+		response = urllib2.urlopen(request)
 		xbmc.executebuiltin('Notification(Synch completed,'+response.read()+')')
 	except urllib2.HTTPError, error:
-		xbmc.log(error.read(),3)
 		xbmc.executebuiltin('Notification(ERROR:,'+error.read()+')')
-
+		
 def synch(listType, videoType):
 	if videoType=="M":
 		query = {'jsonrpc': '2.0','id': 0,'method': 'VideoLibrary.GetMovies','params': {'properties': ['imdbnumber', 'userrating', 'playcount', 'lastplayed', 'dateadded', 'file'] } }
