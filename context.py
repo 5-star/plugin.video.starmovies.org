@@ -8,6 +8,7 @@ import xbmcaddon
 import xbmcvfs
 import urllib
 import urllib2
+import ssl
 
 addon = xbmcaddon.Addon()
 lang = addon.getLocalizedString
@@ -48,16 +49,18 @@ def getTMDBbyName(dbType, title, year):
 
 def api(func, lstType, rating, videoType, tmdbId, kodiId, imdbId):
 	url = 'https://www.starmovies.org/WebService.asmx/kodiMark?func='+ func + '&lstType=' + lstType +'&videoType=' + videoType + '&tmdbId=' + str(tmdbId) + '&imdbId='+imdbId+'&tvdbId=0&kodiId='+str(kodiId)+'&rating=' + str(rating) + '&usr='+USR+'&pwd='+PWD
+	context = ssl._create_unverified_context()
 	request = urllib2.Request(url=url)
-	response = urllib2.urlopen(request, timeout=3).read()
+	response = urllib2.urlopen(request, context=context, timeout=3).read()
 	xbmc.executebuiltin('Notification(' + lang(30010) + ',' + response + ')')
 	
 def prompt(dbid, dbType, tmdbId, title, imdbId):
 	if dbType=="tvshow": videoType="S"
 	else: videoType="M"
 	url="https://www.starmovies.org/Webservice.asmx/getStates?videoType="+videoType+"&tmdbId="+str(tmdbId)+"&imdbId="+imdbId+"&usr="+USR+"&pwd="+PWD
+	context = ssl._create_unverified_context()
 	request = urllib2.Request(url)
-	response = json.loads(urllib2.urlopen(request, timeout=3).read())
+	response = json.loads(urllib2.urlopen(request, context=context, timeout=3).read())
 	if str(response["watchlist"])=='None':
 		pList = [lang(30011)]
 		func = "Mark"

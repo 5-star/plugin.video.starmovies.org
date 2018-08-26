@@ -3,6 +3,7 @@ import sys, os, re
 import json
 import time
 import urllib, urllib2
+import ssl
 import urlparse
 import xbmcplugin
 import xbmcaddon
@@ -67,9 +68,10 @@ def synchCollection(videoType):
 	query_args = {'videoType': videoType, 'usr': urllib.quote(usr), 'pwd': urllib.quote(pwd), 'json': movies}
 	data = urllib.urlencode(query_args)
 	try:
+		context = ssl._create_unverified_context()
 		request = urllib2.Request("https://www.starmovies.org/WebService.asmx/synchCollection", data)
 		#request.add_header('Content-Type','application/json')
-		response = urllib2.urlopen(request)
+		response = urllib2.urlopen(request, context=context)
 		xbmc.executebuiltin('Notification(Synch completed,'+response.read()+')')
 	except urllib2.HTTPError, error:
 		xbmc.executebuiltin('Notification(ERROR:,'+error.read()+')')
@@ -83,7 +85,7 @@ def synch(listType, videoType):
 		movies = jsonrpc(query)['result'].get("tvshows", [])
 	
 	for movie in movies:
-		if movie["imdbnumber"]!="" and (listType=="collection" or (listType=="watched" and movie["playcount"]>0) or (listType=="rated" and movie["userrating"]>0)):
+		if movie["imdbnumber"]!="" and (listType=="collection" or (listType=="watched" and movie["playcount"]>=0) or (listType=="rated" and movie["userrating"]>0)):
 			url = "https://www.starmovies.org/WebService.asmx/synchList?listType=" + listType + "&videoType=" + videoType
 			url = url + "&usr=" + urllib.quote(addon.getSetting('tmdb_user').encode("utf-8"))
 			url = url + "&pwd=" + addon.getSetting('tmdb_password')
@@ -97,8 +99,9 @@ def synch(listType, videoType):
 			if (listType=="collection"): url = url + "&date=" + str(movie["dateadded"])[:10] + "&link="
 			if (listType=="rated"): url = url + "&date=" + "&file="
 			try:
+				context = ssl._create_unverified_context()
 				request = urllib2.Request(url)
-				response = urllib2.urlopen(request).read()
+				response = urllib2.urlopen(request, context=context).read()
 			except:
 				xbmc.log(url.encode("utf-8"),3)
 

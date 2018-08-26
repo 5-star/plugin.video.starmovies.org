@@ -3,6 +3,7 @@ import sys, os, re
 import json
 import time
 import urllib, urllib2
+import ssl
 import urlparse
 import xbmcplugin
 import xbmcaddon
@@ -20,8 +21,9 @@ def setUrl(pQuery):
 
 def getRequest(url):
 	try:
+		context = ssl._create_unverified_context()
 		request = urllib2.Request(url)
-		response = json.load(urllib2.urlopen(request))
+		response = json.load(urllib2.urlopen(request, context=context))
 		return response
 	except Exception as e:
 		xbmc.log(e.message,3)
