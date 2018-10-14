@@ -87,23 +87,31 @@ def synch(listType, videoType):
 	for movie in movies:
 		if movie["imdbnumber"]!="" and (listType=="collection" or (listType=="watched" and movie["playcount"]>=0) or (listType=="rated" and movie["userrating"]>0)):
 			url = "https://www.starmovies.org/WebService.asmx/synchList?listType=" + listType + "&videoType=" + videoType
-			url = url + "&usr=" + urllib.quote(addon.getSetting('tmdb_user').encode("utf-8"))
-			url = url + "&pwd=" + addon.getSetting('tmdb_password')
+			url = url + "&usr=" + urllib.quote(addon.getSetting('usr').encode("utf-8"))
+			url = url + "&pwd=" + addon.getSetting('pwd')
 			if videoType=="M":
 				url = url + "&kodiId=" + str(movie["movieid"]) 
 			else:
 				url = url + "&kodiId=" + str(movie["tvshowid"]) 
 			url = url + "&externalId=" + movie["imdbnumber"] 
 			url = url + "&rating=" + str(movie["userrating"])
-			if (listType=="watched"): url = url + "&date=" + str(movie["lastplayed"])[:10] + "&link=" + urllib.quote_plus(movie["file"].encode('utf-8'))
-			if (listType=="collection"): url = url + "&date=" + str(movie["dateadded"])[:10] + "&link="
+			plDate=str(movie["lastplayed"])[:10]
+			if plDate=="" : plDate="2000-01-01" 
+			addDate=str(movie["dateadded"])[:10]
+			if addDate=="": addDate="2000-01-01" 
+			if (listType=="watched"): url = url + "&date=" + plDate + "&link=" + urllib.quote_plus(movie["file"].encode('utf-8'))
+			if (listType=="collection"): url = url + "&date=" + addDate + "&link="
 			if (listType=="rated"): url = url + "&date=" + "&file="
 			try:
 				context = ssl._create_unverified_context()
 				request = urllib2.Request(url)
 				response = urllib2.urlopen(request, context=context).read()
+				if response[response.find(".org/")+7] != "1":
+					xbmc.log(url,3)
+					xbmc.log(response,3)
 			except:
 				xbmc.log(url.encode("utf-8"),3)
+	xbmc.log("All sent ==============================",3)
 
 addon = xbmcaddon.Addon("plugin.video.starmovies.org")
 xbmc.executebuiltin('Notification(Synch started,'+sys.argv[1]+')')
