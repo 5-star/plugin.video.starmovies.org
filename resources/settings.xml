@@ -7,12 +7,12 @@
 	</category>
 
 	<category label="Synch Kodi to StarMovies">
-		<setting label="30020" type="action" action="RunScript($CWD/resources/synch.py,collection,M)" />
-		<setting label="30021" type="action" action="RunScript($CWD/resources/synch.py,collection,S)" />
-		<setting label="30004" type="action" action="RunScript($CWD/resources/synch.py,rated,M)" />
-		<setting label="30005" type="action" action="RunScript($CWD/resources/synch.py,rated,S)" />
-		<setting label="30018" type="action" action="RunScript($CWD/resources/synch.py,watched,M)" />
-		<setting label="30019" type="action" action="RunScript($CWD/resources/synch.py,watched,S)" />
+		<setting label="30020" type="action" action="RunScript($CWD/synch.py,collection,M)" />
+		<setting label="30021" type="action" action="RunScript($CWD/synch.py,collection,S)" />
+		<setting label="30004" type="action" action="RunScript($CWD/synch.py,rated,M)" />
+		<setting label="30005" type="action" action="RunScript($CWD/synch.py,rated,S)" />
+		<setting label="30018" type="action" action="RunScript($CWD/synch.py,watched,M)" />
+		<setting label="30019" type="action" action="RunScript($CWD/synch.py,watched,S)" />
 	 </category>
 
 </settings>

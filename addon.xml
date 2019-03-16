@@ -20,10 +20,10 @@
 		<summary lang="en_US">Star Movies</summary>
 		<summary lang="en_AU">Star Movies</summary>
 		<summary lang="en_NZ">Star Movies</summary>
-		<description lang="en_GB">A Kodi Addon to display and manage themoviedb lists and ratings</description>
-		<description lang="en_US">A Kodi Addon to display and manage themoviedb lists and ratings</description>
-		<description lang="en_AU">A Kodi Addon to display and manage themoviedb lists and ratings</description>
-		<description lang="en_NZ">A Kodi Addon to display and manage themoviedb lists and ratings</description>
+		<description lang="en_GB">A Kodi Addon to display and manage Starmovies.org lists and ratings</description>
+		<description lang="en_US">A Kodi Addon to display and manage Starmovies.org lists and ratings</description>
+		<description lang="en_AU">A Kodi Addon to display and manage Starmovies.org lists and ratings</description>
+		<description lang="en_NZ">A Kodi Addon to display and manage Starmovies.org lists and ratings</description>
 		<disclaimer lang="en_GB"></disclaimer>
 		<platform>all</platform>
 		<license>GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007</license>

@@ -5,10 +5,13 @@ import time
 import urllib, urllib2
 import ssl
 import urlparse
+import xbmc
 import xbmcplugin
 import xbmcaddon
 from xbmcgui import ListItem
 from xbmcplugin import addDirectoryItem, endOfDirectory
+
+addon = xbmcaddon.Addon("plugin.video.starmovies.org")
 
 def jsonrpc(query):
 	return json.loads(xbmc.executeJSONRPC(json.dumps(query, encoding='utf-8')))
@@ -66,7 +69,7 @@ def synchCollection(videoType):
 	movies = movies.replace("½","")
 	movies = movies.replace("ø","")
 	query_args = {'videoType': videoType, 'usr': urllib.quote(usr), 'pwd': urllib.quote(pwd), 'json': movies}
-	data = urllib.urlencode(query_args)
+	data = urllib.urlencode(query_args)	
 	try:
 		context = ssl._create_unverified_context()
 		request = urllib2.Request("https://www.starmovies.org/WebService.asmx/synchCollection", data)
@@ -85,7 +88,7 @@ def synch(listType, videoType):
 		movies = jsonrpc(query)['result'].get("tvshows", [])
 	
 	for movie in movies:
-		if movie["imdbnumber"]!="" and (listType=="collection" or (listType=="watched" and movie["playcount"]>=0) or (listType=="rated" and movie["userrating"]>0)):
+		if movie["imdbnumber"]!="" and (listType=="collection" or (listType=="watched" and movie["playcount"]>0) or (listType=="rated" and movie["userrating"]>0)):
 			url = "https://www.starmovies.org/WebService.asmx/synchList?listType=" + listType + "&videoType=" + videoType
 			url = url + "&usr=" + urllib.quote(addon.getSetting('usr').encode("utf-8"))
 			url = url + "&pwd=" + addon.getSetting('pwd')
@@ -101,7 +104,7 @@ def synch(listType, videoType):
 			if addDate=="": addDate="2000-01-01" 
 			if (listType=="watched"): url = url + "&date=" + plDate + "&link=" + urllib.quote_plus(movie["file"].encode('utf-8'))
 			if (listType=="collection"): url = url + "&date=" + addDate + "&link="
-			if (listType=="rated"): url = url + "&date=" + "&file="
+			if (listType=="rated"): url = url + "&date=" + "&link="
 			try:
 				context = ssl._create_unverified_context()
 				request = urllib2.Request(url)
@@ -111,12 +114,13 @@ def synch(listType, videoType):
 					xbmc.log(response,3)
 			except:
 				xbmc.log(url.encode("utf-8"),3)
-	xbmc.log("All sent ==============================",3)
 
-addon = xbmcaddon.Addon("plugin.video.starmovies.org")
-xbmc.executebuiltin('Notification(Synch started,'+sys.argv[1]+')')
-if sys.argv[1]=="collection":
-	synchCollection(sys.argv[2])
-else:
-	synch(sys.argv[1], sys.argv[2])
-#xbmc.executebuiltin('Notification(Synch completed,'+sys.argv[1]+')')
+
+if len(sys.argv)>1:
+	addon = xbmcaddon.Addon("plugin.video.starmovies.org")
+	xbmc.executebuiltin('Notification(Synch started,'+sys.argv[1]+')')
+	if sys.argv[1]=="collection":
+		synchCollection(sys.argv[2])
+	else:
+		synch(sys.argv[1], sys.argv[2])
+	xbmc.executebuiltin('Notification(Synch completed,'+sys.argv[1]+')')
