@@ -20,3 +20,4 @@ Installation
 Release history
 ---------------
   * 2016-09-01 v 1.0.1 Initial release
+  6.0.0 - Kodi 19

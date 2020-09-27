@@ -1,2 +1,3 @@
 [B]1.0.3[/B] - New Site starmovies.org
 [B]1.0.1[/B] - Initial Release
+[B]6.0.0[/B] - Kodi 19
