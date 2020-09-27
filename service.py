@@ -3,8 +3,6 @@ import synch
 import sys, os, re
 import json
 import time
-import urllib, urllib2
-import urlparse
 import xbmcplugin
 import xbmcaddon
 from xbmcgui import ListItem
@@ -35,7 +33,7 @@ class ScanMonitor(xbmc.Monitor):
 
 scan_monitor = ScanMonitor()
 
-while not xbmc.abortRequested:
+while not xbmc.Monitor().abortRequested:
 	xbmc.sleep(1000)
 
 del scan_monitor
