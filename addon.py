@@ -6,6 +6,7 @@ import ssl
 import xbmcplugin
 import xbmcaddon
 import xbmcgui
+import xbmcvfs
 from xbmcplugin import addDirectoryItem, endOfDirectory
 
 try:
@@ -80,9 +81,9 @@ def list_items(listType, videoType, order):
     endOfDirectory(addon_handle)
 
 def Main():
-    if menu is 'None':
+    if menu == 'None':
         xbmcplugin.setContent(addon_handle, "menu")
-        imgPath=xbmc.translatePath(xbmcaddon.Addon().getAddonInfo('path'))
+        imgPath=xbmcvfs.translatePath(xbmcaddon.Addon().getAddonInfo('path'))
         li = xbmcgui.ListItem(lang(30004))
         li.setArt({'icon':imgPath+'/resources/movies.png'})
         addDirectoryItem(addon_handle, setUrl({'menu': 'ratedMovies'}), li, True)

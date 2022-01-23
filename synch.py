@@ -88,15 +88,17 @@ def synchCollection(videoType):
     movies = movies.replace("½","")
     movies = movies.replace("ø","")
     query_args = {'videoType': videoType, 'usr': quote(usr), 'pwd': quote(pwd), 'json': movies}
-    data = urlencode(query_args)	
+    url = "https://www.starmovies.org/WebService.asmx/synchCollection"
     try:
         if python=="3":
+            data = urllib.parse.urlencode(query_args).encode("utf-8")
             req = urllib.request.Request(url)
-            response=urllib.request.urlopen(req)
-            xbmc.executebuiltin('Notification(Synch completed,'+response.read()+')')
+            response=urllib.request.urlopen(req, data=data)
+            xbmc.log(str(response.read()), 3)
+            ####xbmc.executebuiltin('Notification(Synch completed,'+response.read()+')')
         else:
+            data = urlencode(query_args)
             context = ssl._create_unverified_context()
-            request = urllib2.Request(url)
             request = urllib2.Request("https://www.starmovies.org/WebService.asmx/synchCollection", data)
             response = urllib2.urlopen(request, context=context)
             xbmc.executebuiltin('Notification(Synch completed,'+response.read()+')')
